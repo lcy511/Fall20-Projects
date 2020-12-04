@@ -1,6 +1,8 @@
 # Fall20-Projects: Gobblet AI with Minimax
 This game AI implements Minimax algorithm and Alpha-Beta pruning to play the gobblet game.
 
+It is a good introduction to this game: https://www.youtube.com/watch?v=XE6YYMn_334
+
 
 ## My Variation
 Players can move an off-board piece of any size. They don’t need to follow the rule that players are only allowed to move the piece from the top of the off-board stack.
