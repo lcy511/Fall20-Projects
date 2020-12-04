@@ -2,9 +2,9 @@ import numpy as np
 from itertools import product
 from collections import defaultdict
 from random import choice
-from copy import deepcopy, copy
+from copy import deepcopy
 
-# ref: a game AI for Connect 4, https://github.com/KeithGalli/Connect4-Python
+# reference: a game AI for Connect 4, https://github.com/KeithGalli/Connect4-Python
 
 
 def get_piece_value(piece):
@@ -280,7 +280,7 @@ class Player:
         # AI mode
         if self.mode == 'A':
             start, target, piece, score = minimax(board, 2, -np.inf, np.inf)
-            print('score', score)
+            # print('score', score)
         # human mode
         elif self.mode == 'H':
             human_move = input(
@@ -334,11 +334,11 @@ class Player:
                     my_piece = row[my_index]
                     my_value = get_piece_value(my_piece)
                     if my_value < 4:
-                        score = score + 5*(my_value - 10)  # not sure
+                        score = score + 5*(my_value - 10)
             elif num_oppo == 2:
                 if num_blank == 0:
                     for piece in row:
-                        score -= get_piece_value(piece)
+                        score -= get_piece_value(piece) # not sure
             elif num_oppo == 0:
                 if num_blank == 2:
                     for piece in row:
@@ -421,10 +421,10 @@ def tournament(p1:Player, p2:Player, board:Board, times=100, verbose=False):
             #result = board.game_over(current_player.uppercase)
             result = board.game_over()
             if verbose:
-                print(start, target, piece, board.current_turn)
-                print(board.board)
-                print(board.top_layer)
-                print(board.top_layer_value)
+                print(current_player.name, 'move: ', start, target, piece)
+                print('The whole board:\n', board.board)
+                print('The top layer of the board:\n',board.top_layer)
+                #print(board.top_layer_value)
             if result == 'continue':
                 board.current_turn ^= 1
             else:
@@ -439,21 +439,22 @@ def tournament(p1:Player, p2:Player, board:Board, times=100, verbose=False):
                     opponent.win_count += 1
                 game_over = True
 
-        if verbose:
-            print('RESULT: ', result, board.current_turn, current_player.name, opponent.name)
-            print(p1.win_count, p2.win_count)
-            print(board.top_layer)
+
+        print('Final board','\n',board.top_layer)
+        print('Result: ', current_player.name, ' ', result)
+        #print(p1.win_count, p2.win_count)
+
         turns += 1
         #print(p2.piece_positions)
         board.reset_board()
         p1.reset_player()
         p2.reset_player()
 
-    print(p1.win_count, p2.win_count)
+    print('Out of {} games, {} wins {} times, {} wins {} times'.format(times, p1.name, p1.win_count, p2.name, p2.win_count))
     return
 
 board = Board(4, 4)
-p1 = Player('p1', True, mode='A')
-p2 = Player('p2', False, mode='H')
-tournament(p1, p2, board, 1, verbose=True)
+p1 = Player('p1', True, mode='R')
+p2 = Player('p2', False, mode='R')
+tournament(p1, p2, board, 100, verbose=False)
 
