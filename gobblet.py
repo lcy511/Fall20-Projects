@@ -4,7 +4,7 @@ from collections import defaultdict
 from random import choice
 from copy import deepcopy
 
-# reference: a game AI for Connect 4, https://github.com/KeithGalli/Connect4-Python
+# reference: a game AI for Connect 4, https://github.com/KeithGalli/Connect4-Python, also specified in the corresponding code part
 
 
 def get_piece_value(piece):
@@ -213,6 +213,8 @@ class Player:
             """
             the player using uppercase letters is maximizing player
             the player using lowercase letters is minimizing player
+            The design of this function refers to: 1. https://en.wikipedia.org/wiki/Alpha%E2%80%93beta_pruning
+                                                   2. https://github.com/KeithGalli/Connect4-Python
             """
             if maximizingPlayer == self.uppercase:
                 moves = self.find_valid_move(board)
@@ -284,13 +286,13 @@ class Player:
         # human mode
         elif self.mode == 'H':
             human_move = input(
-                'Please type your move(start point, target point, piece), ex. (0,0),(1,0),\'s\', or type Q to quit: ')  # format:(0,0),(1,0)
+                'Please type your move(start point, target point, piece), ex. (0,0),(1,0),\'s\', or type Q to quit: ')
             if human_move == 'Q':
                 self.quit = True
                 start, target, piece = None, None, None
             else:
                 start, target, piece = (eval(human_move))
-        # randomness mode
+        # random mode
         else:
             moves = self.find_valid_move(board)
             move = choice(list(moves.keys()))
@@ -317,6 +319,7 @@ class Player:
     def evaluate_score(self, board: Board):
         """
         heuristic function to calculate the value of a given board pattern
+        Design of the function refers to: https://github.com/KeithGalli/Connect4-Python
 
         """
 
@@ -392,7 +395,7 @@ class Player:
 
 def tournament(p1:Player, p2:Player, board:Board, times=100, verbose=False):
     """
-    competition between two players
+    run competition between two players
     :param p1: player1
     :param p2: player2
     :param board: game board
@@ -454,7 +457,7 @@ def tournament(p1:Player, p2:Player, board:Board, times=100, verbose=False):
     return
 
 board = Board(4, 4)
-p1 = Player('p1', True, mode='R')
+p1 = Player('p1', True, mode='A')
 p2 = Player('p2', False, mode='R')
-tournament(p1, p2, board, 100, verbose=False)
+tournament(p1, p2, board, 10, verbose=False)
 
